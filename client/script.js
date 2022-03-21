@@ -427,6 +427,14 @@ function createCard(id, text, x, y, rot, colour, type) {
 
 }
 
+//----------------------------------
+// cards
+//----------------------------------
+function saveboard() {
+    window.location.href =  window.location.href + "/save"
+
+}
+
 var cardColours = ['yellow', 'green', 'blue', 'white'];
 var stickyColours = ['1', '2', '3'];
 
@@ -824,6 +832,10 @@ $(function() {
                 "sticky");
         });
 
+    $("#save")
+        .click(function() {
+            saveboard();
+        });
 
 
     // Style changer

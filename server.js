@@ -112,10 +112,17 @@ router.get('/:id', function(req, res){
 });
 
 
+router.get('/:id/save', function(req, res){
+	res.render('save.pug', {
+		pageTitle: ('scrumblr - ' + req.params.id)
+	});
+});
+
 /**************
  SOCKET.I0
 **************/
 io.on('connection', (client) => {
+
 	//santizes text
 	function scrub( text ) {
 		if (typeof text != "undefined" && text !== null)
@@ -384,36 +391,11 @@ function initClient ( client )
 	//console.log ('initClient Started');
 	getRoom(client, function(room) {
 
-		db.getAllCards( room , function (cards) {
-
-			client.send(
-				{
-					action: 'initCards',
-					data: cards
-				}
-			);
-
-		});
-
-
 		db.getAllColumns ( room, function (columns) {
 			client.send(
 				{
 					action: 'initColumns',
 					data: columns
-				}
-			);
-		});
-
-
-		db.getTheme( room, function(theme) {
-
-			if (theme === null) theme = 'bigcards';
-
-			client.send(
-				{
-					action: 'changeTheme',
-					data: theme
 				}
 			);
 		});
@@ -429,6 +411,30 @@ function initClient ( client )
 				);
 			}
 		});
+
+		db.getAllCards( room , function (cards) {
+
+			client.send(
+				{
+					action: 'initCards',
+					data: cards
+				}
+			);
+
+		});
+
+		db.getTheme( room, function(theme) {
+
+			if (theme === null) theme = 'bigcards';
+
+			client.send(
+				{
+					action: 'changeTheme',
+					data: theme
+				}
+			);
+		});
+
 
 		//Right now this only gets one object (board title) but we will extend it later
 		//to handle an array of all text we want to sync
