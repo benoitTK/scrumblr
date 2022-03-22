@@ -176,14 +176,13 @@ function drawNewCard(id, text, x, y, rot, colour, type, sticker, animationspeed)
     item  = '<li class="column-editable">'+text+'</li>';
     var line = $(item);
     col = findColumn(x)
-    console.log("col=" + col)
     line.appendTo(col);
 
 }
 
 function initCards(cardArray) {
     //first delete any cards that exist
-    console.log('initCards --> ' + JSON.stringify(cardArray));
+    // console.log('initCards --> ' + JSON.stringify(cardArray));
 
     cards = cardArray;
 
@@ -207,10 +206,14 @@ function initCards(cardArray) {
     unblockUI();
 }
 
+const offset = 50;  // card coordinates seem to start with some offset vs the board left side
 function findColumn(x) {
-    if (columns.length == 0) return "#col0";
-    var colID = Math.trunc( x / (boardSize.width / columns.length));
+    if (columns.length == 0) return "#board";
+    var colwidth = (boardSize.width / columns.length);
+    var colID = Math.trunc( (x+offset) / colwidth);
+    //console.log("width=" + boardSize.width + "; col=" + colID + "; colWidth=" +colwidth);
     if (colID >= columns.length) return "#col"+(columns.length - 1);
+    if (colID < 0) return "#col0";
     return "#col"+colID;
 }
 
@@ -223,7 +226,7 @@ function drawNewColumn(id, text){
 // cols
 //----------------------------------
 function initColumns(columnArray) {
-    console.log('initColumns --> ' + JSON.stringify(columnArray));
+    // console.log('initColumns --> ' + JSON.stringify(columnArray));
 
     totalcolumns = 0;
     columns = columnArray;
@@ -241,7 +244,7 @@ function onColumnChange(id, text) {
 }
 
 function setBoardSize(size) {
-    console.log('setBoardSize --> ' + JSON.stringify(size));
+    // console.log('setBoardSize --> ' + JSON.stringify(size));
     boardSize = size
 }
 
